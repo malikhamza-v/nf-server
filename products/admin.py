@@ -8,7 +8,7 @@ from django.contrib.auth.models import Group, User
 
 class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name", )}
-    list_display = ("name", "original_price", "is_at_discount", "discounted_price")
+    list_display = ("name", "original_price", "is_at_discount", "discounted_percent")
     formfield_overrides = {
         models.ManyToManyField: {'widget': CheckboxSelectMultiple},
     }

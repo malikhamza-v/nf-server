@@ -31,16 +31,18 @@ class AvailableSizes(models.Model):
 class ProductImages(models.Model):
     product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='image', default="", null=True, blank=True)
+    is_thumbnail = models.BooleanField(default=False)
     
     class Meta:
         verbose_name_plural = "Product Image Upload"
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
-    description = models.TextField()
+    short_description = models.TextField(max_length=255, null=True)
+    long_description = models.TextField(max_length=380, null=True)
     original_price = models.DecimalField(max_digits=10, decimal_places=2)  
-    is_at_discount = models.BooleanField(default=False, null=True)
-    discounted_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, default=0, blank=True)
+    is_at_discount = models.BooleanField(default=False)
+    discounted_percent = models.IntegerField(null=True, default=0, blank=True)
     slug = models.SlugField(unique=True, default=None, blank=True, null=True)
     available_sizes = models.ManyToManyField('AvailableSizes')
     available_colors = models.ManyToManyField('AvailableColors') 
