@@ -13,6 +13,12 @@ class GetProducts(generics.ListAPIView):
 @api_view(['GET'])
 def get_single_product(request, *args, **kwargs):
     slug = kwargs['slug']
+    
     qs = Product.objects.filter(slug=slug)
-    serializer = ProductSerializer(qs, many=True)
-    return Response({'data': serializer.data})
+    if qs:
+        serializer = ProductSerializer(qs, many=True)
+        return Response({'data': serializer.data})
+    else:
+        return Response({'error':404})    
+
+    
