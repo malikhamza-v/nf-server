@@ -7,10 +7,12 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = True
+if DEBUG == True:
+    SECRET_KEY=os.environ.get('SECRET_KEY')
+else:
+    SECRET_KEY = 'l5zjt!7t5)k+2377ls#=#8@98=2=nl6nti-($3atj)=)*_hhd!'
 
-SECRET_KEY=os.environ.get('SECRET_KEY')
-
-ALLOWED_HOSTS = ['malikhamzav101.pythonanywhere.com']
+ALLOWED_HOSTS = ['malikhamzav101.pythonanywhere.com','localhost']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
