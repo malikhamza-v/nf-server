@@ -3,7 +3,7 @@ from django.db import models
 from django.forms import CheckboxSelectMultiple
 from .models import Product, Category, AvailableColors, AvailableSizes, ProductImages
 from knox.models import AuthToken
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import Group
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -31,5 +31,3 @@ admin.site.register(AvailableColors, AvailableColorsAdmin)
 admin.site.register(AvailableSizes)
 admin.site.unregister(AuthToken)
 admin.site.unregister(Group)
-admin.site.unregister(User)
-admin.site.register(User, UserAdmin)

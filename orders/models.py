@@ -1,8 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
-
+from useraccounts.models import CustomUserModel
 class Orders(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
+    user = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE, related_name='orders')
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     email_address = models.CharField(max_length=150)

@@ -1,6 +1,7 @@
 from pathlib import Path
 from dotenv import load_dotenv
 import os 
+from datetime import timedelta
 
 load_dotenv()
 
@@ -12,7 +13,7 @@ if DEBUG == False:
 else:
     SECRET_KEY = 'l5zjt!7t5)k+2377ls#=#8@98=2=nl6nti-($3atj)=)*_hhd!'
 
-ALLOWED_HOSTS = ['malikhamzav101.pythonanywhere.com','localhost']
+ALLOWED_HOSTS = ['malikhamzav101.pythonanywhere.com','localhost', '*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -103,12 +104,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+AUTH_USER_MODEL = 'useraccounts.CustomUserModel'
+
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        # 'rest_framework.authentication.BasicAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
-        'knox.auth.TokenAuthentication',
-    ]
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+}
+
+REST_KNOX = {
+  'TOKEN_TTL': timedelta(hours=650),
+  'USER_SERIALIZER': 'useraccounts.serializers.UserSerializer',
 }
 
 CORS_ORIGIN_ALLOW_ALL=True

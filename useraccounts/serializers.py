@@ -1,20 +1,46 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
+from .models import CustomUserModel
+from django.contrib.auth import authenticate
 
-# User Serializer
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ('id', 'username', 'email')
+        model = CustomUserModel
+        fields = ('id', 'email')
 
-# Register Serializer
-class RegisterSerializer(serializers.ModelSerializer):
+class CreateUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ('id', 'email', 'password')
-        extra_kwargs = {'password': {'write_only': True}}
+        model = CustomUserModel
+        fields = '__all__'
 
-    def create(self, validated_data):
-        user = User.objects.create_user(validated_data['email'], validated_data['password'])
+        extra_kwargs = {
+            'password': {'required': True}
+        }
 
+    def validate(self, attrs):
+        email = attrs.get('email', '').strip().lower()
+
+        if CustomUserModel.objects.filter(email=email).exists():
+            raise serializers.ValidationError('User already exist.')
+        return attrs
+    
+    def create(self, validate_data):
+        user = CustomUserModel.objects.create_user(**validate_data)
         return user
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(style={'input_type':'password'},trim_whitespace = False)   
+    def validate(self, attrs):
+        email = attrs.get('email').lower()
+        password = attrs.get('password')    
+        if not email or not password:
+            raise serializers.ValidationError('Please Provide both email and password')
+
+        if not CustomUserModel.objects.filter(email=email).exists():
+            raise serializers.ValidationError('Email Does not Exist')
+
+        user = authenticate(request=self.context.get('request'), email = email, password = password)    
+        if not user:
+                raise serializers.ValidationError('Wrong Credential')   
+        attrs['user'] = user
+        return attrs
