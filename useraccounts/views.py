@@ -9,9 +9,9 @@ from rest_framework import status
 
 
 class CreateUserAPI(CreateAPIView):
+    permission_classes = (AllowAny,)
     queryset = CustomUserModel.objects.all()
     serializer_class = CreateUserSerializer
-    permission_classes = (AllowAny,)
 
 class LoginAPI(knox_views.LoginView):
     permission_classes = (AllowAny, )

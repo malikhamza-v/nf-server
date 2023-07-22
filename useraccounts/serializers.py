@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from .models import CustomUserModel
 from django.contrib.auth import authenticate
+import logging
+logger = logging.getLogger(__name__)
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,13 +20,19 @@ class CreateUserSerializer(serializers.ModelSerializer):
         }
 
     def validate(self, attrs):
+        logger.info('Creating a new user...')
+
         email = attrs.get('email', '').strip().lower()
 
         if CustomUserModel.objects.filter(email=email).exists():
+            self._errors['email'] = ['User already exists.']
+
             raise serializers.ValidationError('User already exist.')
         return attrs
     
     def create(self, validate_data):
+        logger.info('Creating a new user...')
+
         user = CustomUserModel.objects.create_user(**validate_data)
         return user
 
