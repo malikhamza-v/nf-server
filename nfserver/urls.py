@@ -9,6 +9,8 @@ urlpatterns = [
     path('', RedirectView.as_view(url=reverse_lazy('admin:index'))),
     path('api/products/', include('products.urls')),
     path('api/accounts/', include('useraccounts.urls')),
+    path('api/extras/', include('extras.urls')),
+    path('api/orders/', include('orders.urls')),
     path('admin/', admin.site.urls),
 ] 
 

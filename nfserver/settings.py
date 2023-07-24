@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'useraccounts',
     'products',
     'orders',
+    'extras',
     'corsheaders',
 ]
 
